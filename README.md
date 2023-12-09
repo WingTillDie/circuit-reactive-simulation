@@ -16,8 +16,8 @@ ReactiveX for Python (RxPY) library is employed for reactive programming
 ## Examples
 Design and simulate a full adder circuit in Python using reactive programming  
 
-Outputs:
 ```
+$ ./circuit-reactive-simulation.py
 Half adder
 a b , c s
 0 0 , 0 0
