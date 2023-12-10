@@ -23,16 +23,41 @@ Design and simulate counter and full adder circuit
 Design and simulate in Python:
 
 ```python
-clk = CreateClock()
-seq = CreateSeq(clk, reset_value=10)
-Q = seq.get_Q()
-seq.set_f(lambda Q: Q+1, Q)
-print('Q <= Q+1')
-print(Q.value)
-for _ in range(3):
-    clk.tick()
-    print(int(Q.value))
-print()
+def test_counter():
+    clk = CreateClock()
+    seq = CreateSeq(clk, reset_value=10)
+    Q = seq.get_Q()
+    seq.set_f(lambda Q: Q+1, Q)
+    print('Q <= Q+1')
+    print(Q.value)
+    for _ in range(3):
+        clk.tick()
+        print(int(Q.value))
+    print()
+
+def module_half_adder(i_a, i_b):
+    o_s = CreateWire(lambda i_a, i_b: i_a != i_b, i_a, i_b) # Sum
+    o_c = CreateWire(lambda i_a, i_b: i_a and i_b, i_a, i_b) # Carry
+    return o_c, o_s
+def module_full_adder(i_a, i_b, i_c):
+    o_c0, o_s0 = module_half_adder(i_a, i_b)
+    o_c1, o_s1 = module_half_adder(o_s0, i_c)
+    o_s = CreateWire(lambda o_s1: o_s1, o_s1)
+    o_c = CreateWire(lambda o_c0, o_c1: o_c0 or o_c1, o_c0, o_c1)
+    return o_c, o_s
+def test_module_half_adder():
+    # Half adder testing
+    i_a = CreatePrimaryInput(0)
+    i_b = CreatePrimaryInput(0)
+    o_c, o_s = module_half_adder(i_a, i_b)
+    print('Half adder')
+    print('a b , c s')
+    for _ in range(2**2):
+        i_a.value = _ & 1
+        _ >>= 1
+        i_b.value = _ & 1
+        print(int(i_a.value), int(i_b.value), ',', int(o_c.value), int(o_s.value))
+    print()
 ```
 
 Simulation result:
