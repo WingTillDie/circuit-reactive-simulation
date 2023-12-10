@@ -12,7 +12,8 @@ class CreatePrimaryInput:
 
     @value.setter
     def value(self, new_value):
-        self._subject.on_next(new_value)
+        if new_value != self.value:
+            self._subject.on_next(new_value)
 
 class CreateWire:
     def __init__(self, *f_and_reactive_or_dependent_variables):
@@ -31,8 +32,10 @@ class CreateWire:
             )
         else: raise
     def observer(self, values):
-        self._value = self._f(*values)
-        self._subject.on_next(self.value)
+        new_value = self._f(*values)
+        if new_value != self._value:
+            self._value = new_value
+            self._subject.on_next(new_value)
     # Assignment to value is forbidden, value is dependent on observables
     @property
     def value(self):
