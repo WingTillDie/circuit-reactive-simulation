@@ -33,9 +33,8 @@ class CreateWire:
         else: raise
     def observer(self, values):
         new_value = self._f(*values)
-        if new_value != self._value:
-            self._value = new_value
-            self._subject.on_next(new_value)
+        self._value = new_value
+        self._subject.on_next(new_value)
     # Assignment to value is forbidden, value is dependent on observables
     @property
     def value(self):
