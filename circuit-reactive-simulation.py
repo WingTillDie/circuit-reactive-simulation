@@ -218,7 +218,7 @@ def test_counter():
         clk.tick()
         print(int(Q.value))
     print()
-#test_counter()
+test_counter()
 
 def test_counter_reset_async():
     clk = CreateClock()
@@ -244,7 +244,7 @@ def test_counter_reset_async():
     print(int(Q.value))
 
     print()
-test_counter_reset_async()
+#test_counter_reset_async()
 
 def test_counter_load_async():
     clk = CreateClock()

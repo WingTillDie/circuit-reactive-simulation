@@ -20,14 +20,30 @@ ReactiveX for Python (RxPY) library is employed for reactive programming
 
 Design and simulate counter and full adder circuit
 
+Design and simulate in Python:
+
+```python
+clk = CreateClock()
+seq = CreateSeq(clk, reset_value=10)
+Q = seq.get_Q()
+seq.set_f(lambda Q: Q+1, Q)
+print('Q <= Q+1')
+print(Q.value)
+for _ in range(3):
+    clk.tick()
+    print(int(Q.value))
+print()
+```
+
+Simulation result:
+
 ```
 $ ./circuit-reactive-simulation.py
 Q <= Q+1
 10
 11
 12
-10
-11
+13
 
 Q <= !Q
 0
