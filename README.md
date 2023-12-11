@@ -45,19 +45,23 @@ def module_full_adder(i_a, i_b, i_c):
     o_s = CreateWire(lambda o_s1: o_s1, o_s1)
     o_c = CreateWire(lambda o_c0, o_c1: o_c0 or o_c1, o_c0, o_c1)
     return o_c, o_s
-def test_module_half_adder():
-    # Half adder testing
+def test_module_full_adder():
+    # Full adder testing
     i_a = CreatePrimaryInput(0)
     i_b = CreatePrimaryInput(0)
-    o_c, o_s = module_half_adder(i_a, i_b)
-    print('Half adder')
-    print('a b , c s')
-    for _ in range(2**2):
+    i_c = CreatePrimaryInput(0)
+    o_c, o_s = module_full_adder(i_a, i_b, i_c)
+    print('Full adder')
+    print('a b i , o s')
+    for _ in range(2**3):
         i_a.value = _ & 1
         _ >>= 1
         i_b.value = _ & 1
-        print(int(i_a.value), int(i_b.value), ',', int(o_c.value), int(o_s.value))
+        _ >>= 1
+        i_c.value = _ & 1
+        print(int(i_a.value), int(i_b.value), int(i_c.value), ',', int(o_c.value), int(o_s.value))
     print()
+test_module_full_adder()
 ```
 
 Simulation result:
