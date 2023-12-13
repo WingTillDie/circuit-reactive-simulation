@@ -23,17 +23,20 @@ Design and simulate counter and full adder circuit
 Design and simulate in Python:
 
 ```python
-def test_counter():
-    clk = CreateClock()
-    seq = CreateSeq(clk, reset_value=10)
+def module_counter(clk, reset_value):
+    seq = CreateSeq(clk, reset_value)
     Q = seq.get_Q()
     seq.set_f(lambda Q: Q+1, Q)
+    return Q
+def test_counter():
+    clk = CreateClock()
+    Q = module_counter(clk, reset_value=10)
     print('Q <= Q+1')
     print(Q.value)
     for _ in range(3):
         clk.tick()
         print(int(Q.value))
-    print()
+test_counter()
 
 def module_half_adder(i_a, i_b):
     o_s = CreateWire(lambda i_a, i_b: i_a != i_b, i_a, i_b) # Sum
@@ -46,7 +49,6 @@ def module_full_adder(i_a, i_b, i_c):
     o_c = CreateWire(lambda o_c0, o_c1: o_c0 or o_c1, o_c0, o_c1)
     return o_c, o_s
 def test_module_full_adder():
-    # Full adder testing
     i_a = CreatePrimaryInput(0)
     i_b = CreatePrimaryInput(0)
     i_c = CreatePrimaryInput(0)
@@ -60,7 +62,6 @@ def test_module_full_adder():
         _ >>= 1
         i_c.value = _ & 1
         print(int(i_a.value), int(i_b.value), int(i_c.value), ',', int(o_c.value), int(o_s.value))
-    print()
 test_module_full_adder()
 ```
 

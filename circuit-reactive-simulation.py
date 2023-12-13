@@ -207,11 +207,15 @@ class CreateSeqLoadAsync:
         Q_next = CreateWire(*f_and_reactive_or_dependent_variables)
         self.D.set(Q_next)
 
-def test_counter():
-    clk = CreateClock()
-    seq = CreateSeq(clk, reset_value=10)
+def module_counter(clk, reset_value):
+    seq = CreateSeq(clk, reset_value)
     Q = seq.get_Q()
     seq.set_f(lambda Q: Q+1, Q)
+    return Q
+
+def test_counter():
+    clk = CreateClock()
+    Q = module_counter(clk, reset_value=10)
     print('Q <= Q+1')
     print(Q.value)
     for _ in range(3):
